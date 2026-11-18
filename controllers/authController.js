@@ -1,7 +1,7 @@
 
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import User from "../models/User.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // Generate JWT token
 const generateToken = (user) => {
@@ -19,7 +19,7 @@ const generateToken = (user) => {
 
 // ==================== SIGNUP ====================
 
-exports.signup = async (req, res) => {
+const signup = async (req, res) => {
   try {
     const {
       name,
@@ -84,10 +84,7 @@ exports.signup = async (req, res) => {
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(
-      password,
-      12
-    );
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     // Create user
     const user = await User.create({
@@ -131,7 +128,7 @@ exports.signup = async (req, res) => {
 
 // ==================== LOGIN ====================
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -188,3 +185,11 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+// Export controller functions
+const authController = {
+  signup,
+  login,
+};
+
+export default authController;

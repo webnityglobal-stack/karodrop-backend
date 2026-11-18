@@ -1,13 +1,23 @@
-require("dotenv").config();
 
-const express = require("express");
-const cors = require("cors");
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+
+import productRoutes from "./routes/productRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
+import wishlistRoutes from "./routes/wishlistRoutes.js";
+import addressRoutes from "./routes/addressRoutes.js";
+
+dotenv.config();
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 // Test route
 app.get("/", (req, res) => {
@@ -18,13 +28,22 @@ app.get("/", (req, res) => {
 });
 
 // Authentication routes
-app.use(
-  "/api/auth",
-  require("./routes/authRoutes")
-);
-console.log("Auth routes registered successfully");
+app.use("/api/auth", authRoutes);
 
-console.log("Auth routes registered: /api/auth");
+// Product routes
+app.use("/api/products", productRoutes);
+
+// Category routes
+app.use("/api/categories", categoryRoutes);
+
+// Cart routes
+app.use("/api/cart", cartRoutes);
+
+// Wishlist routes
+app.use("/api/wishlist", wishlistRoutes);
+
+// Address routes
+app.use("/api/addresses", addressRoutes);
 
 // Handle unknown routes
 app.use((req, res) => {
@@ -34,4 +53,4 @@ app.use((req, res) => {
   });
 });
 
-module.exports = app;
+export default app;
